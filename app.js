@@ -39,7 +39,7 @@ async function main(){
 main().then(err => {
   // console.log(err);
 });
-
+app.set('trust proxy', 1)
 app.set('case sensitive routing', true);
 app.use(logger('dev'));
 // passport.use(

@@ -29,7 +29,7 @@ const v2indexRouter = require("./api/v2/index");
 const app = express();
 
 async function main(){
-    await mongoose.connect(process.env.MONGODB_URL,{ 
+    await mongoose.connect("mongodb+srv://lmfirstproject:lifememoryproject01@lifememorycluster.4muhltj.mongodb.net/?retryWrites=true&w=majority",{ 
         dbName: "LifeMEMOry_db",
         useUnifiedTopology: true, 
         useNewUrlParser: true,

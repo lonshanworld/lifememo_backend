@@ -104,14 +104,18 @@ const getProfiledata = [
         if(errors.isEmpty()){
             const data = matchedData(req);
 
-            const userData = await userModel.findById(data.userId).select("-password");
+            const userData = await usermodel.findById(data.userId).select("-password");
+            const userprofile = await imagemodel.findById(userData.profileImg).exec();
+            const userImageUrl = userprofile === null ? null : await getImageUrl(userprofile.image.buffer);
             // let postList = [];
             // for(let a = 0; a < userData.posts.length; a++){
 
             // }
+            // console.log(userImageUrl);
             if(userData){
                 res.status(200).send({
-                    "message" : {userData}
+                    "message" : {userData},
+                    "profileImgUrl" : userImageUrl,
                 });
             }else{
                 res.status(404);

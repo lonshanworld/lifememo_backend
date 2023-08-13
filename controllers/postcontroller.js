@@ -117,12 +117,14 @@ const getPost = [
                 const imagedata = postdetailInfo.bodyImage === null ? null : await imageModel.findById(postdetailInfo.bodyImage._id).select("-_id -__v -createDate -userId");
                 const txtdata =  postdetailInfo.bodyText === null ? null : await messageModel.findById(postdetailInfo.bodyText._id).select("-_id -__v -createDate -userId");
                 const userdata = await userModel.findOne({posts : postdetailInfo._id}).exec();
+                const userprofile = await imageModel.findById(userdata.profileImg).exec();
+                const userImageUrl = userprofile === null ? null : await getImageUrl(userprofile.image.buffer);
 
-            
                 const postdetail = {
                     postId : postdetailInfo._id,
                     userId : userdata._id,
                     userName: userdata.userName,
+                    userImageUrl : userImageUrl,
                     createDate : postdetailInfo.createDate,
                     image : imagedata === null ? null : imagedata.image,
                     text : txtdata === null ? null : txtdata.txt,

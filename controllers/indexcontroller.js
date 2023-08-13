@@ -17,50 +17,38 @@ const signupUser = [
     body("birthDate","Invalid date of birth").trim().optional({checkFalsy: true}).isISO8601().toDate(),
     asyncHandler(async(req, res)=>{
         const errors = validationResult(req);
-        let imageId = null;
-        let newImage;
-        if(req.files[0] !== undefined){
-            newImage = new imageModel({
-                image: req.files[0].buffer,
-            });
-    
-            imageId = newImage._id;
-        }
-    
-        let newUser;
-
-        bcrypt.hash(req.body.password, 12,async(err, hashedPassword) =>{
-            if(err){
-                // res.status(500).json({
-                //     message: err.toString(),
-                // });
-                res.status(500);
-                res.statusMessage = err.toString();
-                res.end();
-            }else{
-                newUser = new userModel({
-                    userName: req.body.userName,
-                    email: req.body.email,
-                    password: hashedPassword, //Aa@2dddd
-                    birthDate: req.body.birthDate,
-                    profileImg: imageId,
+        if(errors.isEmpty()){
+            let imageId = null;
+            let newImage;
+            if(req.files[0] !== undefined){
+                newImage = new imageModel({
+                    image: req.files[0].buffer,
                 });
-
-                if(!errors.isEmpty()){
-
-                    let errorarray = errors.array().map(function(cur){
-                        return cur["msg"];
-                    });
         
-                    // res.status(404).json({
-                    //     message: errorarray.join(".  "),
+                imageId = newImage._id;
+            }
+        
+            let newUser;
+
+            bcrypt.hash(req.body.password, 12,async(err, hashedPassword) =>{
+                if(err){
+                    // res.status(500).json({
+                    //     message: err.toString(),
                     // });
-                    res.status(404);
-                    res.statusMessage = errorarray.join(".  ");
+                    res.status(500);
+                    res.statusMessage = err.toString();
                     res.end();
                 }else{
+                    newUser = new userModel({
+                        userName: req.body.userName,
+                        email: req.body.email,
+                        password: hashedPassword, //Aa@2dddd
+                        birthDate: req.body.birthDate,
+                        profileImg: imageId,
+                    });
+
                     const findUser = await userModel.findOne({email : req.body.email});
-                    
+                        
                     if(findUser === null){
                         try{
                             if(newImage !== undefined){
@@ -91,8 +79,16 @@ const signupUser = [
                         res.end();
                     }
                 }
-            }
-        });
+            });
+        }else{
+            
+            let errorarray = errors.array().map(function(cur){
+                return cur["msg"];
+            });
+            res.status(404);
+            res.statusMessage = errorarray.join(". ");
+            res.end();
+        }
     
         
     }),

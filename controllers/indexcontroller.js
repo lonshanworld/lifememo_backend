@@ -9,6 +9,12 @@ const upload = multer();
 const bcrypt = require("bcryptjs");
 const {body, validationResult} = require("express-validator");
 
+const welcome = (req, res)=>{
+    res.status(200).send({
+        message: "Welcome to Life Memo", 
+    });
+}
+
 const signupUser = [
     upload.any(),
     body("userName").trim().isLength({min:1, max: 200}).escape().withMessage("Username must not be empty"),
@@ -154,4 +160,5 @@ module.exports = {
     signupUser,
     loginUser,
     logoutUser,
+    welcome
 };

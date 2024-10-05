@@ -6,7 +6,7 @@ const router = express.Router();
 // const upload = multer();
 // const asyncHandler = require("express-async-handler");
 // const {body, validator} = require("express-validator");
-const {signupUser, loginUser, logoutUser} = require("../../controllers/indexcontroller");
+const {signupUser, loginUser, logoutUser, welcome} = require("../../controllers/indexcontroller");
 
 /* GET home page. */
 // router.get('/', function(req, res) {
@@ -34,5 +34,6 @@ const {signupUser, loginUser, logoutUser} = require("../../controllers/indexcont
 router.post("/signup",signupUser);
 router.post("/login", loginUser);
 router.get("/logout", logoutUser);
+router.get("/",welcome);
 
 module.exports = router;

@@ -12,6 +12,29 @@ const userSchema = new mongoose.Schema({
     chats: [{type: mongoose.Schema.Types.ObjectId, ref: "chat", required: false, default: []}],
     posts: [{type: mongoose.Schema.Types.ObjectId, ref: "post", required: false, default: []}],
     shareposts: [{type: mongoose.Schema.Types.ObjectId, ref: "post", required: false, default: []}],
+    postLimit : {type : Number, required : false, default : 5},
+    videoCallPurchaseId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "purchase",
+        required : false,
+    },
+    voiceCallPurchaseId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "purchase",
+        required : false,
+    },
+    postPurchaseId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "purchase",
+        required : false,
+    },
+    role : {
+        type : String,
+        required : true,
+        enum : ["admin", "user"],
+        default : "user",
+    }
 });
+
 
 module.exports = mongoose.model("user", userSchema);

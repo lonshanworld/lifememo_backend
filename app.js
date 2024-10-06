@@ -21,7 +21,8 @@ const v1usersRouter = require("./api/v1/user");
 const v1imageRouter = require("./api/v1/image");
 const v1postRouter = require("./api/v1/post");
 const v1chatRouter = require("./api/v1/chat");
-
+const v1packageRouter = require("./api/v1/package");
+const v1purchaseRouter = require("./api/v1/purchase");
 
 //for v2
 const v2indexRouter = require("./api/v2/index");
@@ -99,7 +100,8 @@ app.use(v1string+"user", v1usersRouter);
 app.use(v1string+"image", v1imageRouter);
 app.use(v1string+"post", v1postRouter);
 app.use(v1string+"chat",v1chatRouter);
-
+app.use(v1string+"package", v1packageRouter);
+app.use(v1string+"purchase",v1purchaseRouter );
 
 //for v2
 app.use(v2string, v2indexRouter);

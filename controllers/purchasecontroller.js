@@ -25,7 +25,7 @@ const purchasePackage = [
                 await newPurchase.save();
                 const packageData = await packagemodel.findById(req.body.packageId);
                 console.log("is here?",packageData);
-                if(packageData.packageType === "post"){
+                if(packageData.packageType === "moment"){
                     console.log(" heree?")                
 
                     // await usermodel.findByIdAndUpdate(
@@ -95,7 +95,7 @@ const adminPermitted = [
                 const purchaseData = await purchasemodel.findById(req.body.purchaseId);
                 const findCustomer = await usermodel.findById(purchaseData.userId);
                 const packageData = await packagemodel.findById(purchaseData.packageId);
-                if(packageData.packageType === "post"){
+                if(packageData.packageType === "moment"){
                     await usermodel.findByIdAndUpdate(
                         {_id : purchaseData.userId},
                         {

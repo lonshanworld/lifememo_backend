@@ -5,7 +5,7 @@ const userModel = require("../models/usermodel");
 const protectAuth = asyncHandler(async(req, res, next)=>{
     // let token;
 
-    // token = req.cookies.jwtforlifememory;
+    // token = req.cookies.jwtfornotememo;
 
     // if(token){
     //     try{

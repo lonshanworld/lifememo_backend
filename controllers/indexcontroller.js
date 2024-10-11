@@ -233,7 +233,7 @@ const logoutUser = asyncHandler(async(req, res)=>{
     //     expires: new Date(0),
     // });
 
-    res.clearCookie("jwtforlifememory");
+    res.clearCookie("jwtfornotememo");
 
     res.status(200).send({
         message: "User logout successfully", 

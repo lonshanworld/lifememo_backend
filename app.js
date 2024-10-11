@@ -19,7 +19,7 @@ require("dotenv").config();
 const v1indexRouter = require('./api/v1/index');
 const v1usersRouter = require("./api/v1/user");
 const v1imageRouter = require("./api/v1/image");
-const v1postRouter = require("./api/v1/post");
+const v1postRouter = require("./api/v1/moment");
 const v1chatRouter = require("./api/v1/chat");
 const v1packageRouter = require("./api/v1/package");
 const v1purchaseRouter = require("./api/v1/purchase");

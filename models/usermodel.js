@@ -10,15 +10,15 @@ const userSchema = new mongoose.Schema({
     profileImg: {type: mongoose.Schema.Types.ObjectId, ref:"image", required: false,},
     friends : [{type: mongoose.Schema.Types.ObjectId, ref: "user", required: false, default: []}],
     chats: [{type: mongoose.Schema.Types.ObjectId, ref: "chat", required: false, default: []}],
-    posts: [{type: mongoose.Schema.Types.ObjectId, ref: "post", required: false, default: []}],
-    shareposts: [{type: mongoose.Schema.Types.ObjectId, ref: "post", required: false, default: []}],
+    posts: [{type: mongoose.Schema.Types.ObjectId, ref: "moment", required: false, default: []}],
+    shareposts: [{type: mongoose.Schema.Types.ObjectId, ref: "moment", required: false, default: []}],
     postLimit : {type : Number, required : false, default : 5},
-    videoCallPurchaseId : {
+    voiceCallPurchaseId : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "purchase",
         required : false,
     },
-    voiceCallPurchaseId : {
+    videoCallPurchaseId : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "purchase",
         required : false,

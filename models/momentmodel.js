@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const postSchema = new mongoose.Schema({
+const momentSchema = new mongoose.Schema({
     bodyText : {type: mongoose.Schema.Types.ObjectId, ref: "message", required: false, default:null },
     bodyImage : {type: mongoose.Schema.Types.ObjectId, required: false, default: null},
     postType : {
@@ -16,4 +16,4 @@ const postSchema = new mongoose.Schema({
     shares : [{type: mongoose.Schema.Types.ObjectId, ref: "user", required: false, default: []}],
 });
 
-module.exports = mongoose.model("post", postSchema);
+module.exports = mongoose.model("moment", momentSchema);

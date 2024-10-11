@@ -22,6 +22,7 @@ const createPackage = [
             const newPackage = new packagemodel({
                 packageName : req.body.packageName,
                 packageType : req.body.packageType,
+                price : req.body.price ?? 0,
                 content : req.body.content,
                 limit : req.body.limit,
                 isUnlimited : req.body.isUnlimited,

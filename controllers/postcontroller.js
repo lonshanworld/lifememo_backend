@@ -1,5 +1,4 @@
 const asyncHandler = require("express-async-handler");
-const postModel = require("../models/postmodel");
 const imageModel = require("../models/imagemodel");
 const messageModel = require("../models/messagemodel");
 const userModel = require("../models/usermodel");
@@ -8,6 +7,7 @@ const tokenUser = require("../utils/getIdfromToken");
 const {query, validationResult, matchedData} = require("express-validator");
 const getImageUrl = require("../utils/imageconvert");
 const imagemodel = require("../models/imagemodel");
+const momentModel = require("./../models/momentmodel");
 
 const upload = multer();
 
@@ -16,6 +16,7 @@ const sendPost = [
     asyncHandler(async(req, res)=>{
         let newmessage;
         let newImage;
+        console.log("working?", req);
         if(req.body.txt){
             newmessage = new messageModel({
                 txt: req.body.txt,
@@ -28,7 +29,7 @@ const sendPost = [
             });
         }
 
-        let newpost = new postModel({
+        let newpost = new momentModel({
             bodyText: newmessage ? newmessage._id : null,
             bodyImage: newImage ? newImage._id : null,
             postType : req.body.postType,
@@ -73,7 +74,7 @@ const deletepost = [
             const otheruser = await userModel.findOne({posts : data.postId}).exec();
         
             if(userData._id.equals(otheruser._id)){
-                await postModel.findByIdAndRemove(data.postId).then(async(success)=>{
+                await momentModel.findByIdAndRemove(data.postId).then(async(success)=>{
                     await userModel.findByIdAndUpdate(
                         {_id : otheruser._id},
                         {$pull : {posts : data.postId}},
@@ -111,7 +112,7 @@ const getPost = [
         const errors = validationResult(req);
         if(errors.isEmpty()){
             const data = matchedData(req);
-            const postdetailInfo = await postModel.findById(data.postId);
+            const postdetailInfo = await momentModel.findById(data.postId);
 
             if(postdetailInfo){
                 const imagedata = postdetailInfo.bodyImage === null ? null : await imageModel.findById(postdetailInfo.bodyImage._id).select("-_id -__v -createDate -userId");
@@ -154,12 +155,13 @@ const getPostbyNum = [
     query("startnum").notEmpty().escape().withMessage("Something wrong with your query"),
     query("amount").notEmpty().escape().withMessage("Something wrong with your query"),
     asyncHandler(async(req, res)=>{
+        console.log("here");
         const errors = validationResult(req);
         if(errors.isEmpty()){
             const data = matchedData(req);
 
 
-            const allposts = await postModel.find({postType : "public"}).skip(data.startnum).limit(data.amount).sort({createDate : "desc"}).select("_id").exec();
+            const allposts = await momentModel.find({postType : "public"}).skip(data.startnum).limit(data.amount).sort({createDate : "desc"}).select("_id").exec();
         
 
             res.status(200).send({
@@ -183,7 +185,7 @@ const givelikes = [
             const data = matchedData(req);
             const userData = await tokenUser(req);
 
-            await postModel.findByIdAndUpdate(
+            await momentModel.findByIdAndUpdate(
                 {_id : data.postId},
                 {$addToSet : {likedBy : userData._id}},
                 {new : true, safe:true}
@@ -197,7 +199,7 @@ const givelikes = [
                 res.end();
             });
 
-            // const oldpost = await postModel.findById(data.postId);
+            // const oldpost = await momentModel.findById(data.postId);
             // res.status(200).send(userData._id);
         }else{
             res.status(400);
@@ -216,7 +218,7 @@ const deletelike = [
             const data = matchedData(req);
             const userdata = await tokenUser(req);
 
-            await postModel.findByIdAndUpdate(
+            await momentModel.findByIdAndUpdate(
                 {_id : data.postId},
                 {$pull : {likedBy : userdata._id}},
                 {new : true, safe:true},
@@ -249,7 +251,7 @@ const givecomment = [
                 userId : userData._id,
             });
             await newmessage.save();
-            await postModel.findByIdAndUpdate(
+            await momentModel.findByIdAndUpdate(
                 {_id: data.postId},
                 {$addToSet : {messages : newmessage._id}},
                 {new : true, safe:true},
@@ -278,7 +280,7 @@ const deletecomment = [
         if(errors.isEmpty()){
             const data = matchedData(req);
     
-            await postModel.findByIdAndUpdate(
+            await momentModel.findByIdAndUpdate(
                 {_id : data.postId},
                 {$pull : {messages : data.commentId}},
                 {new : true, safe:true},
@@ -312,7 +314,7 @@ const share = [
             const data = matchedData(req);
             const userData = await tokenUser(req);
 
-            await postModel.findByIdAndUpdate(
+            await momentModel.findByIdAndUpdate(
                 {_id : data.postId},
                 {$addToSet : {shares : userData._id}},
                 {new : true, safe:true},
@@ -351,7 +353,7 @@ const removeshare = [
             const data = matchedData(req);
             const userData = await tokenUser(req);
 
-            await postModel.findByIdAndUpdate(
+            await momentModel.findByIdAndUpdate(
                 {_id : data.postId},
                 {$pull : {shares : userData._id}},
                 {new : true, safe:true},
@@ -378,7 +380,7 @@ const postdetail = [
         if(errors.isEmpty()){
             const data = matchedData(req);
             
-            const singlepost = await postModel.findById(data.postId).exec();
+            const singlepost = await momentModel.findById(data.postId).exec();
             if(singlepost){
                 
                 const userdata = await userModel.findOne({posts : data.postId}).select("_id userName profileImg").exec();

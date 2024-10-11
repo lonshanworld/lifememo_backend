@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const generateToken = (res, userId) =>{
     const token = getToken(userId);
-    res.cookie("jwtforlifememory", token, {
+    res.cookie("jwtfornotememo", token, {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60*60*24*7*1000,

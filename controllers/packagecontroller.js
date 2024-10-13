@@ -10,6 +10,7 @@ const createPackage = [
     body("packageType").trim().not().isEmpty().withMessage("Package Type must not empty"),
     body("content").trim().not().isEmpty().withMessage("content must not empty"),
     asyncHandler(async(req, res)=>{
+        console.log("reach here???");
         const errors = validationResult(req);
         if(errors.isEmpty()){
             const userData = await tokenUser(req);
